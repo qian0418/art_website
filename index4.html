@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Qian Xu|Art</title>
+	<meta name="description" content="Effect inspiration for opening an image grid item." />
+	<meta name="keywords" content="image grid, effect, inspiration, css, javascript, animation, masonry" />
+	<meta name="author" content="Codrops" />
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/demo.css" />
+	<link rel="stylesheet" type="text/css" href="css/style4.css" />
+	<script src="js/modernizr-custom.js"></script>
+</head>
+
+<body class="demo-4">
+	<div class="container">
+		<header class="codrops-header">
+			
+			<h1>Qian Xu <span>Welcome</span></h1>
+			<nav class="codrops-demos">
+				
+				<a href="index2.html">Paintings</a>
+				<a href="index3.html">3D models</a>
+				<a class="current-demo" href="index4.html">About</a>
+				<a href="index5.html">Contact</a>
+			
+			</nav>
+		</header>
+		<head>
+			<div>
+			My works focus on oil and acrylic paintings. I love the texture of oil and acrylic paint, and especially the quality that they could be overlayed for many times make the painting flexible and revisible. I am an observer of the world that I live in, and I paint various topics that I think are interesting such as theories and memories. I would also like to explore more topics such as gender issues,  questions of identity, politics in the future. 
+			</div>
+
+
+            <div>
+            	<p>I paint realistic paintings including buildings, portraits, and sometimes landscapes. I like to capture emotions and add them into my paintings because I believe emotions are important for connecting people’s internal world. My goal is to Inspire people; making people feel empathy about my paintings, and discover the narrative inside of the paintings are big part of my works. 
+
+            </div>
+
+            <div>
+            	My painting is not about the object itself, but the life journey that I’ve been through. <h3>
+            	</div>
+		</head>
+
+		
+				
+		</div>
+	<!-- /container -->
+	<script src="js/imagesloaded.pkgd.min.js"></script>
+	<script src="js/masonry.pkgd.min.js"></script>
+	<script src="js/classie.js"></script>
+	<script src="js/main.js"></script>
+	<script>
+		(function() {
+			var support = { transitions: Modernizr.csstransitions },
+				// transition end event name
+				transEndEventNames = { 'WebkitTransition': 'webkitTransitionEnd', 'MozTransition': 'transitionend', 'OTransition': 'oTransitionEnd', 'msTransition': 'MSTransitionEnd', 'transition': 'transitionend' },
+				transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
+				onEndTransition = function( el, callback ) {
+					var onEndCallbackFn = function( ev ) {
+						if( support.transitions ) {
+							if( ev.target != this ) return;
+							this.removeEventListener( transEndEventName, onEndCallbackFn );
+						}
+						if( callback && typeof callback === 'function' ) { callback.call(this); }
+					};
+					if( support.transitions ) {
+						el.addEventListener( transEndEventName, onEndCallbackFn );
+					}
+					else {
+						onEndCallbackFn();
+					}
+				};
+
+			new GridFx(document.querySelector('.grid'), {
+				imgPosition : {
+					x : 1,
+					y : -0.75
+				},
+				onOpenItem : function(instance, item) {
+					var win = {width: window.innerWidth, height: window.innerHeight};
+					instance.items.forEach(function(el) {
+						if(item != el) {
+							var delay = Math.floor(Math.random() * 130);
+							el.style.WebkitTransition = 'opacity .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1), -webkit-transform .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1)';
+							el.style.transition = 'opacity .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1), transform .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1)';
+							
+							var elOffset = el.getBoundingClientRect(),
+								elSize = {width : el.offsetWidth, height : el.offsetHeight};
+
+							el.style.WebkitTransform = 'translate3d(' + (win.width/2 - elOffset.left - elSize.width/2) + 'px,' + (win.height - elOffset.top - elSize.height/2) + 'px,0) scale3d(0,0,1)';
+							el.style.transform = 'translate3d(' + (win.width/2 - elOffset.left - elSize.width/2) + 'px,' + (win.height - elOffset.top - elSize.height/2) + 'px,0) scale3d(0,0,1)';
+							el.style.opacity = 0;
+						}
+					});
+				},
+				onCloseItem : function(instance, item) {
+					instance.items.forEach(function(el) {
+						if(item != el) {
+							el.style.WebkitTransition = 'opacity .3s, -webkit-transform .3s';
+							el.style.transition = 'opacity .3s, transform .3s';
+
+							el.style.WebkitTransform = 'translate3d(0,0,0) scale3d(1,1,1)';
+							el.style.transform = 'translate3d(0,0,0) scale3d(1,1,1)';
+							el.style.opacity = 1;
+
+							onEndTransition(el, function() {
+								el.style.transition = 'none';
+								el.style.WebkitTransform = 'none';
+							});
+						}
+					});
+				}
+			});
+		})();
+	</script>
+</body>
+
+</html>
